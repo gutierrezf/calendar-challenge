@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { setDate } from '../../store/reducers/date';
+
 import chevronPath from '../../assets/chevron.svg';
+import moment from 'moment';
 
 const HeaderContainer = styled.div`
   align-items: center;
@@ -29,26 +33,29 @@ const Title = styled.b`
   font-size: 2rem;
 `;
 
-const HeaderNav = ({ title, prev, next }) => {
+const HeaderNav = ({ date }) => {
+  const dispatch = useDispatch();
+  const title = date.format('MMMM YYYY');
+
+  const onPrev = () => {
+    dispatch(setDate(date.subtract(1, 'months').clone()));
+  };
+
+  const onNext = () => {
+    dispatch(setDate(date.add(1, 'months').clone()));
+  };
+
   return (
     <HeaderContainer>
-      <Chevron left onClick={prev} />
+      <Chevron left onClick={onPrev} />
       <Title>{title}</Title>
-      <Chevron onClick={next} />
+      <Chevron onClick={onNext} />
     </HeaderContainer>
   );
 };
 
-HeaderNav.defaultTypes = {
-  next: () => {},
-  prev: () => {},
-  title: '',
-};
-
 HeaderNav.propTypes = {
-  next: PropTypes.func,
-  prev: PropTypes.func,
-  title: PropTypes.string,
+  date: PropTypes.instanceOf(moment),
 };
 
 export default HeaderNav;

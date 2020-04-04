@@ -1,23 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { HeaderNav } from './components';
-import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 const Calendar = () => {
-  const [date, setDate] = useState(moment());
-  const title = date.format('MMMM YYYY');
+  const date = useSelector((state) => state.date);
 
-  const onPrev = () => {
-    const prevDate = date.subtract(1, 'months').clone();
-    setDate(prevDate);
-  };
-  const onNext = () => {
-    const nextDate = date.add(1, 'months').clone();
-    setDate(nextDate);
-  };
+  if (!date) return <h1>Loading</h1>;
 
   return (
     <React.Fragment>
-      <HeaderNav title={title} prev={onPrev} next={onNext} />
+      <HeaderNav date={date} />
     </React.Fragment>
   );
 };
