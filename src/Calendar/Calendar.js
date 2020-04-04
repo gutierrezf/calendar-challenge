@@ -7,11 +7,11 @@ const Calendar = () => {
   const title = date.format('MMMM YYYY');
 
   const onPrev = () => {
-    const prevDate = date.subtract(1, 'months').clone();
+    const prevDate = date.subtract(1, 'months');
     setDate(prevDate);
   };
   const onNext = () => {
-    const nextDate = date.add(1, 'months').clone();
+    const nextDate = date.add(1, 'months');
     setDate(nextDate);
   };
 
