@@ -9,10 +9,11 @@ import moment from 'moment';
 
 const HeaderContainer = styled.div`
   align-items: center;
-  background: #cdccdc;
+  background: ${(props) => props.theme.vanillaIce};
   display: flex;
   justify-content: space-between;
   padding: 0.5rem;
+  width: 100%;
 `;
 
 const Chevron = styled.button`

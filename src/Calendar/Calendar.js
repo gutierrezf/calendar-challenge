@@ -1,6 +1,16 @@
 import React from 'react';
-import { HeaderNav } from './components';
+import { HeaderNav, WeekDayRow } from './components';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  align-items: center;
+  color: ${(props) => props.theme.blueZodiac};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5rem;
+`;
 
 const Calendar = () => {
   const date = useSelector((state) => state.date);
@@ -8,9 +18,10 @@ const Calendar = () => {
   if (!date) return <h1>Loading</h1>;
 
   return (
-    <React.Fragment>
+    <Container>
       <HeaderNav date={date} />
-    </React.Fragment>
+      <WeekDayRow />
+    </Container>
   );
 };
 

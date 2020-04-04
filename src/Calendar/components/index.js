@@ -1,3 +1,4 @@
 import HeaderNav from './HeaderNav';
+import WeekDayRow from './WeekDayRow';
 
-export { HeaderNav };
+export { HeaderNav, WeekDayRow };
