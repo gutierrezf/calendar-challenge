@@ -1,10 +1,6 @@
-const username = 'freddy';
-typeof username === 'string';
+import React from 'react';
+import { render } from 'react-dom';
 
-if (!('serviceWorker' in navigator)) {
-  // you have an old browser :-(
-}
+const App = () => <h1>Hello Word</h1>;
 
-const greeting = 'hello';
-console.log(`${greeting} world!`);
-[1, 2, 3].forEach((x) => console.log(x));
+render(<App />, document.getElementById('app'));
