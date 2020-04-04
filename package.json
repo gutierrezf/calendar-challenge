@@ -8,8 +8,7 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "lint": "eslint --ignore-path .gitignore .",
-    "check-format": "prettier --ignore-path .gitignore \"**/*.+(js|json)\" --list-different",
-    "pre-commit": "npm run build"
+    "check-format": "prettier --ignore-path .gitignore \"**/*.+(js|json)\" --list-different"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -20,5 +19,12 @@
     "husky": "^4.2.3",
     "lint-staged": "^10.1.1",
     "prettier": "^2.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test",
+      "...": "..."
+    }
   }
 }
