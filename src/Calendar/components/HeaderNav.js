@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { setDate } from '../../store/reducers/date';
+import moment from 'moment';
 
 import chevronPath from '../../assets/chevron.svg';
-import moment from 'moment';
 
 const HeaderContainer = styled.div`
   align-items: center;

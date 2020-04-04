@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderNav, WeekDayRow } from './components';
+import { HeaderNav, TableGrid, WeekDayRow } from './components';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -21,6 +21,7 @@ const Calendar = () => {
     <Container>
       <HeaderNav date={date} />
       <WeekDayRow />
+      <TableGrid date={date} />
     </Container>
   );
 };

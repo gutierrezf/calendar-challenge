@@ -6,7 +6,10 @@ import { setDate } from './store/reducers/date';
 
 const App = () => {
   const dispatch = useDispatch();
-  dispatch(setDate(moment()));
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  dispatch(setDate(moment(`${year}-${month}`)));
 
   return <Calendar />;
 };

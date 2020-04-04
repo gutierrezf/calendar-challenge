@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { weekdays } from 'moment';
 
 const Container = styled.div`
   align-items: center;
@@ -21,15 +22,7 @@ const WeekDay = styled.b`
 `;
 
 const WeekDayRow = () => {
-  const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
+  const days = weekdays();
 
   return (
     <Container>
