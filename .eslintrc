@@ -6,8 +6,10 @@
       "jsx": true
     }
   },
-  "extends": ["eslint:commended"],
-  "rules": {},
+  "extends": ["eslint:recommended", "eslint-config-prettier"],
+  "rules": {
+    "strict": ["error", "never"]
+  },
   "env": {
     "browser": true
   }
