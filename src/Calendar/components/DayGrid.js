@@ -4,7 +4,11 @@ import styled from 'styled-components';
 import moment from 'moment';
 import Popup from 'reactjs-popup';
 import { useDispatch, useSelector } from 'react-redux';
-import { createReminder, updateReminder } from '../../store/reducers/reminders';
+import {
+  createReminder,
+  updateReminder,
+  deleteReminder,
+} from '../../store/reducers/reminders';
 
 import ReminderForm from './ReminderForm';
 
@@ -16,9 +20,10 @@ const DayContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: -1px;
-  height: 100px;
+  height: 150px;
   padding-top: 1.5rem;
   position: relative;
+  overflow: hidden;
   width: 100%;
 
   &:before {
@@ -70,28 +75,33 @@ const AddReminderButton = styled.button`
 const EditReminderButton = styled.button`
   border-radius: 5px;
   padding: 3px 5px;
-  position: absolute;
-  right: 0.5rem;
-  top: 4px;
-  z-index: 1;
+`;
+const DeleteReminderButton = styled(EditReminderButton)`
+  margin-left: 0.25rem;
 `;
 
-const Reminder = styled.span`
+const Reminder = styled.div`
+  align-items: center;
   background: ${(props) => props.color};
   color: white;
+  display: flex;
   border-radius: 0.2rem;
+  flex-direction: column-reverse;
   font-size: 0.5rem;
+  justify-content: space-between;
   margin: 0.5rem auto 0;
   padding: 0.5rem;
   position: relative;
-  width: 70%;
+  width: 90%;
 
   &:last-child {
     margin-bottom: 0.5rem;
   }
 
   @media (max-width: ${(props) => props.theme.small}) {
-    margin: 0.5rem 0 0;
+    flex-direction: row-reverse;
+    margin: 0.5rem 0.5rem 0 0;
+    width: 70%;
   }
 `;
 
@@ -108,6 +118,10 @@ const DayGrid = ({ date }) => {
     } else {
       dispatch(createReminder(key, reminderData));
     }
+  };
+
+  const handleDeleteReminder = (id) => {
+    dispatch(deleteReminder(key, id));
   };
 
   return (
@@ -129,21 +143,28 @@ const DayGrid = ({ date }) => {
       {reminders &&
         reminders.map((reminder, index) => (
           <Reminder key={index} color={reminder.color}>
-            <Popup
-              trigger={<EditReminderButton>Edit</EditReminderButton>}
-              modal
-              closeOnDocumentClick
-            >
-              {(close) => (
-                <ReminderForm
-                  reminder={reminder}
-                  onComplete={(data, isUpdate) => {
-                    handleReminder(data, isUpdate);
-                    close();
-                  }}
-                />
-              )}
-            </Popup>
+            <div>
+              <Popup
+                trigger={<EditReminderButton>Edit</EditReminderButton>}
+                modal
+                closeOnDocumentClick
+              >
+                {(close) => (
+                  <ReminderForm
+                    reminder={reminder}
+                    onComplete={(data, isUpdate) => {
+                      handleReminder(data, isUpdate);
+                      close();
+                    }}
+                  />
+                )}
+              </Popup>
+              <DeleteReminderButton
+                onClick={() => handleDeleteReminder(reminder.id)}
+              >
+                Delete
+              </DeleteReminderButton>
+            </div>
             {reminder.desc}
           </Reminder>
         ))}

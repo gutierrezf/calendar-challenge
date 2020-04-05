@@ -16,9 +16,11 @@ const remindersReducer = (state = defaultState, action = {}) => {
       state[action.key] = handleUpdate(state[action.key], action.reminder);
       return state;
     case DELETE:
-      return null;
+      state[action.key] = handleDelete(state[action.key], action.id);
+      return state;
     case DELETE_ALL:
-      return null;
+      state[action.key] = [];
+      return state;
   }
 
   return state;
@@ -43,10 +45,10 @@ export const updateReminder = (key, reminder) => {
   };
 };
 
-export const deleteReminder = (key, reminder) => {
+export const deleteReminder = (key, id) => {
   return {
     type: DELETE,
-    reminder,
+    id,
     key,
   };
 };
@@ -68,9 +70,13 @@ function handleCreate(reminders, newReminder) {
 }
 
 function handleUpdate(reminders, newReminder) {
-  let index = reminders.findIndex((r) => (r.id = newReminder.id));
+  let index = reminders.findIndex((r) => r.id === newReminder.id);
   if (index >= 0) {
     reminders[index] = { ...newReminder };
   }
   return [...reminders];
+}
+
+function handleDelete(reminders, id) {
+  return reminders.filter((r) => r.id !== id);
 }

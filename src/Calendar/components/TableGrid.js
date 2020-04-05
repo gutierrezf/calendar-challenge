@@ -31,7 +31,7 @@ const BlankGrid = styled.div`
   border-color: ${(props) => props.theme.quarterSpanishWhite};
   border-top: 0;
   margin-left: -1px;
-  min-height: 100px;
+  min-height: 150px;
   width: 100%;
 
   @media (max-width: ${(props) => props.theme.small}) {
