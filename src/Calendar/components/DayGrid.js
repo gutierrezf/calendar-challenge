@@ -8,6 +8,7 @@ import {
   createReminder,
   updateReminder,
   deleteReminder,
+  deleteAllReminders,
 } from '../../store/reducers/reminders';
 
 import ReminderForm from './ReminderForm';
@@ -76,8 +77,19 @@ const EditReminderButton = styled.button`
   border-radius: 5px;
   padding: 3px 5px;
 `;
+
 const DeleteReminderButton = styled(EditReminderButton)`
   margin-left: 0.25rem;
+`;
+
+const DeleteAllRemindersButton = styled(AddReminderButton)`
+  background: white;
+  color: black;
+  left: 1.8rem;
+
+  @media (max-width: ${(props) => props.theme.small}) {
+    top: 4rem;
+  }
 `;
 
 const Reminder = styled.div`
@@ -120,6 +132,10 @@ const DayGrid = ({ date }) => {
     }
   };
 
+  const handleDeleteAllReminder = () => {
+    dispatch(deleteAllReminders(key));
+  };
+
   const handleDeleteReminder = (id) => {
     dispatch(deleteReminder(key, id));
   };
@@ -140,6 +156,11 @@ const DayGrid = ({ date }) => {
           />
         )}
       </Popup>
+      {reminders && reminders.length > 1 && (
+        <DeleteAllRemindersButton onClick={() => handleDeleteAllReminder()}>
+          Empty
+        </DeleteAllRemindersButton>
+      )}
       {reminders &&
         reminders.map((reminder, index) => (
           <Reminder key={index} color={reminder.color}>
