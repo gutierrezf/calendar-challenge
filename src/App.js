@@ -7,9 +7,8 @@ import { setDate } from './store/reducers/date';
 const App = () => {
   const dispatch = useDispatch();
   const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  dispatch(setDate(moment(`${year}-${month}`)));
+  const startOfTheMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  dispatch(setDate(moment(startOfTheMonth)));
 
   return <Calendar />;
 };
