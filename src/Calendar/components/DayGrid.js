@@ -13,6 +13,13 @@ import {
 
 import ReminderForm from './ReminderForm';
 
+const StyledPopup = styled(Popup)`
+  &-content {
+    @media (max-width: ${(props) => props.theme.small}) {
+      width: 90% !important;
+    }
+  }
+`;
 const DayContainer = styled.div`
   background: ${(props) => props.theme.iron};
   border: 1px solid;
@@ -112,6 +119,7 @@ const Reminder = styled.div`
 
   @media (max-width: ${(props) => props.theme.small}) {
     flex-direction: row-reverse;
+    font-size: 0.8rem;
     margin: 0.5rem 0.5rem 0 0;
     width: 70%;
   }
@@ -121,6 +129,8 @@ const DayGrid = ({ date }) => {
   const key = date.format('MMMM D YYYY');
   const dispatch = useDispatch();
   const reminders = useSelector((state) => state.reminders[key]) || [];
+  reminders.sort((a, b) => a.time - b.time);
+
   const dayName = date.format('dddd');
   const dayNumber = date.format('D');
 
@@ -142,7 +152,7 @@ const DayGrid = ({ date }) => {
 
   return (
     <DayContainer dayName={dayName} dayNumber={dayNumber}>
-      <Popup
+      <StyledPopup
         trigger={<AddReminderButton>Add</AddReminderButton>}
         modal
         closeOnDocumentClick
@@ -155,40 +165,41 @@ const DayGrid = ({ date }) => {
             }}
           />
         )}
-      </Popup>
-      {reminders && reminders.length > 1 && (
+      </StyledPopup>
+      {reminders.length > 1 && (
         <DeleteAllRemindersButton onClick={() => handleDeleteAllReminder()}>
           Empty
         </DeleteAllRemindersButton>
       )}
-      {reminders &&
-        reminders.map((reminder, index) => (
-          <Reminder key={index} color={reminder.color}>
-            <div>
-              <Popup
-                trigger={<EditReminderButton>Edit</EditReminderButton>}
-                modal
-                closeOnDocumentClick
-              >
-                {(close) => (
-                  <ReminderForm
-                    reminder={reminder}
-                    onComplete={(data, isUpdate) => {
-                      handleReminder(data, isUpdate);
-                      close();
-                    }}
-                  />
-                )}
-              </Popup>
-              <DeleteReminderButton
-                onClick={() => handleDeleteReminder(reminder.id)}
-              >
-                Delete
-              </DeleteReminderButton>
-            </div>
-            {reminder.desc}
-          </Reminder>
-        ))}
+      {reminders.map((reminder, index) => (
+        <Reminder key={index} color={reminder.color}>
+          <div>
+            <StyledPopup
+              trigger={<EditReminderButton>Edit</EditReminderButton>}
+              modal
+              closeOnDocumentClick
+            >
+              {(close) => (
+                <ReminderForm
+                  reminder={reminder}
+                  onComplete={(data, isUpdate) => {
+                    handleReminder(data, isUpdate);
+                    close();
+                  }}
+                />
+              )}
+            </StyledPopup>
+            <DeleteReminderButton
+              onClick={() => handleDeleteReminder(reminder.id)}
+            >
+              Delete
+            </DeleteReminderButton>
+          </div>
+          <p>
+            <b>{reminder.displayTime}</b> - {reminder.desc}
+          </p>
+        </Reminder>
+      ))}
     </DayContainer>
   );
 };

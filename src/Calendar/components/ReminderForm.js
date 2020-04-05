@@ -59,6 +59,7 @@ const ReminderForm = ({ reminder, onComplete }) => {
     time: reminder.time || 0,
     hour: reminder.hour || 0,
     minute: reminder.minute || 0,
+    displayTime: reminder.displayTime || '12:00 am',
   });
   const [color, setColor] = useState(reminder.color || '');
   const { register, handleSubmit, errors } = useForm({
@@ -73,6 +74,7 @@ const ReminderForm = ({ reminder, onComplete }) => {
 
   const onTimeChanged = (timeDate) => {
     setTime({
+      displayTime: timeDate.format('h:mm a'),
       time: parseInt(timeDate.format('Hmm')),
       hour: parseInt(timeDate.format('H')),
       minute: parseInt(timeDate.format('mm')),
@@ -126,7 +128,7 @@ const ReminderForm = ({ reminder, onComplete }) => {
       </FormGroup>
 
       <FormGroup>
-        <CirclePicker onChangeComplete={onColorPicked} />
+        <CirclePicker circleSize={20} onChangeComplete={onColorPicked} />
       </FormGroup>
 
       <Button color={color} disabled={!color} type="submit">
@@ -152,6 +154,7 @@ ReminderForm.propTypes = {
     time: PropTypes.number,
     hour: PropTypes.number,
     minute: PropTypes.number,
+    displayTime: PropTypes.string,
   }),
 };
 
