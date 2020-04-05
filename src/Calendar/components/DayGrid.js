@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
+import Popup from 'reactjs-popup';
+import { useDispatch, useSelector } from 'react-redux';
+import { createReminder } from '../../store/reducers/reminders';
+
+import ReminderForm from './ReminderForm';
 
 const DayContainer = styled.div`
   background: ${(props) => props.theme.iron};
@@ -43,6 +48,17 @@ const DayContainer = styled.div`
   }
 `;
 
+const AddReminderButton = styled.button`
+  background: ${(props) => props.theme.greenPea};
+  border-radius: 5px;
+  color: white;
+  padding: 3px 5px;
+  position: absolute;
+  right: 0.5rem;
+  top: 4px;
+  z-index: 1;
+`;
+
 const Reminder = styled.span`
   background: ${(props) => props.color};
   color: white;
@@ -63,28 +79,40 @@ const Reminder = styled.span`
 `;
 
 const DayGrid = ({ date }) => {
-  const [reminders, setReminders] = useState([]);
+  const key = date.format('MMMM D YYYY');
+  const dispatch = useDispatch();
+  const reminders = useSelector((state) => state.reminders[key]);
   const dayName = date.format('dddd');
   const dayNumber = date.format('D');
 
-  const addReminder = () => {
-    setReminders([
-      ...reminders,
-      {
-        city: 'miami',
-        desc: 'Heellow! This is a test',
-        color: ['red', 'green', 'blue', 'gray'][Math.floor(Math.random() * 4)],
-      },
-    ]);
+  console.log(reminders);
+
+  const addReminder = (reminderData) => {
+    dispatch(createReminder(key, reminderData));
   };
 
   return (
-    <DayContainer dayName={dayName} dayNumber={dayNumber} onClick={addReminder}>
-      {reminders.map((reminder, index) => (
-        <Reminder key={index} color={reminder.color}>
-          {reminder.desc}
-        </Reminder>
-      ))}
+    <DayContainer dayName={dayName} dayNumber={dayNumber}>
+      <Popup
+        trigger={<AddReminderButton>Add</AddReminderButton>}
+        modal
+        closeOnDocumentClick
+      >
+        {(close) => (
+          <ReminderForm
+            onComplete={(data) => {
+              addReminder(data);
+              close();
+            }}
+          />
+        )}
+      </Popup>
+      {reminders &&
+        reminders.map((reminder, index) => (
+          <Reminder key={index} color={reminder.color}>
+            {reminder.desc}
+          </Reminder>
+        ))}
     </DayContainer>
   );
 };

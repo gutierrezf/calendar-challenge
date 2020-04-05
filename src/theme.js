@@ -4,5 +4,6 @@ export const blueZodiac = '#10375c';
 export const iron = '#dee3e2';
 export const foggyGray = '#d1cebd';
 export const quarterSpanishWhite = '#f6eedf';
-
+export const greenPea = '#216353';
+export const trout = '#495057';
 export const small = '767px';
