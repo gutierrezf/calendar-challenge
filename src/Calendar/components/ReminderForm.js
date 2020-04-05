@@ -55,7 +55,11 @@ const Input = styled.input`
 `;
 
 const ReminderForm = ({ reminder, onComplete }) => {
-  const [time, setTime] = useState(reminder.time || 0);
+  const [time, setTime] = useState({
+    time: reminder.time || 0,
+    hour: reminder.hour || 0,
+    minute: reminder.minute || 0,
+  });
   const [color, setColor] = useState(reminder.color || '');
   const { register, handleSubmit, errors } = useForm({
     defaultValues: reminder,
@@ -63,23 +67,23 @@ const ReminderForm = ({ reminder, onComplete }) => {
   const isUpdate = Boolean(reminder.id);
 
   const onSubmit = handleSubmit((reminderFormData) => {
-    if (!isUpdate) {
-      reminderFormData.id = uid();
-    }
-
-    onComplete({ ...reminderFormData, time, color });
+    reminderFormData.id = reminder.id || uid();
+    onComplete({ ...reminderFormData, ...time, color }, isUpdate);
   });
 
   const onTimeChanged = (timeDate) => {
-    const timeValue = parseInt(timeDate.format('Hmm'));
-    setTime(timeValue);
+    setTime({
+      time: parseInt(timeDate.format('Hmm')),
+      hour: parseInt(timeDate.format('H')),
+      minute: parseInt(timeDate.format('mm')),
+    });
   };
 
   const onColorPicked = (color) => {
     setColor(color.hex);
   };
 
-  const now = moment().hour(0).minute(0);
+  const now = moment().hour(time.hour).minute(time.minute);
 
   return (
     <Form onSubmit={onSubmit}>
@@ -146,6 +150,8 @@ ReminderForm.propTypes = {
     color: PropTypes.string,
     desc: PropTypes.string,
     time: PropTypes.number,
+    hour: PropTypes.number,
+    minute: PropTypes.number,
   }),
 };
 

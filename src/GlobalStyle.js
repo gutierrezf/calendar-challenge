@@ -14,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
     * {
       box-sizing: border-box;
     }
+
+    .rc-time-picker-clear {
+        display: none;
+    }
 `;
 
 export default GlobalStyle;

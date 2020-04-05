@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import Popup from 'reactjs-popup';
 import { useDispatch, useSelector } from 'react-redux';
-import { createReminder } from '../../store/reducers/reminders';
+import { createReminder, updateReminder } from '../../store/reducers/reminders';
 
 import ReminderForm from './ReminderForm';
 
@@ -17,6 +17,7 @@ const DayContainer = styled.div`
   flex-direction: column;
   margin-left: -1px;
   height: 100px;
+  padding-top: 1.5rem;
   position: relative;
   width: 100%;
 
@@ -39,6 +40,7 @@ const DayContainer = styled.div`
     align-items: flex-end;
     height: auto;
     min-height: 100px;
+    padding-top: 0;
 
     &:before {
       border-radius: 5px;
@@ -57,6 +59,21 @@ const AddReminderButton = styled.button`
   right: 0.5rem;
   top: 4px;
   z-index: 1;
+
+  @media (max-width: ${(props) => props.theme.small}) {
+    left: 0.5rem;
+    padding: 0.5rem;
+    top: 2rem;
+  }
+`;
+
+const EditReminderButton = styled.button`
+  border-radius: 5px;
+  padding: 3px 5px;
+  position: absolute;
+  right: 0.5rem;
+  top: 4px;
+  z-index: 1;
 `;
 
 const Reminder = styled.span`
@@ -67,7 +84,7 @@ const Reminder = styled.span`
   margin: 0.5rem auto 0;
   padding: 0.5rem;
   position: relative;
-  width: 80%;
+  width: 70%;
 
   &:last-child {
     margin-bottom: 0.5rem;
@@ -81,14 +98,16 @@ const Reminder = styled.span`
 const DayGrid = ({ date }) => {
   const key = date.format('MMMM D YYYY');
   const dispatch = useDispatch();
-  const reminders = useSelector((state) => state.reminders[key]);
+  const reminders = useSelector((state) => state.reminders[key]) || [];
   const dayName = date.format('dddd');
   const dayNumber = date.format('D');
 
-  console.log(reminders);
-
-  const addReminder = (reminderData) => {
-    dispatch(createReminder(key, reminderData));
+  const handleReminder = (reminderData, isUpdate) => {
+    if (isUpdate) {
+      dispatch(updateReminder(key, reminderData));
+    } else {
+      dispatch(createReminder(key, reminderData));
+    }
   };
 
   return (
@@ -101,7 +120,7 @@ const DayGrid = ({ date }) => {
         {(close) => (
           <ReminderForm
             onComplete={(data) => {
-              addReminder(data);
+              handleReminder(data);
               close();
             }}
           />
@@ -110,6 +129,21 @@ const DayGrid = ({ date }) => {
       {reminders &&
         reminders.map((reminder, index) => (
           <Reminder key={index} color={reminder.color}>
+            <Popup
+              trigger={<EditReminderButton>Edit</EditReminderButton>}
+              modal
+              closeOnDocumentClick
+            >
+              {(close) => (
+                <ReminderForm
+                  reminder={reminder}
+                  onComplete={(data, isUpdate) => {
+                    handleReminder(data, isUpdate);
+                    close();
+                  }}
+                />
+              )}
+            </Popup>
             {reminder.desc}
           </Reminder>
         ))}
