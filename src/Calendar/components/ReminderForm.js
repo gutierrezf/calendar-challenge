@@ -108,10 +108,12 @@ const ReminderForm = ({ reminder, onComplete }) => {
           placeholder="Reminder"
           name="desc"
           type="text"
-          ref={register({ required: true, maxLength: 30 })}
+          ref={register({ required: true, maxLength: 30, minLength: 1 })}
         />
         {errors.desc && (
-          <Error>This field is required and max length is 30</Error>
+          <Error data-testid="reminder-error">
+            This should have more than 1 and less than 30 chars
+          </Error>
         )}
       </FormGroup>
 
@@ -131,7 +133,12 @@ const ReminderForm = ({ reminder, onComplete }) => {
         <CirclePicker circleSize={20} onChangeComplete={onColorPicked} />
       </FormGroup>
 
-      <Button color={color} disabled={!color} type="submit">
+      <Button
+        data-testid="submit"
+        color={color}
+        disabled={!color}
+        type="submit"
+      >
         {!color && <Error>Select a color</Error>}
         {color && (isUpdate ? 'Update' : 'Create')}
       </Button>
