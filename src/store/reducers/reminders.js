@@ -10,17 +10,22 @@ const defaultState = {};
 const remindersReducer = (state = defaultState, action = {}) => {
   switch (action.type) {
     case CREATE:
-      state[action.key] = handleCreate(state[action.key], action.reminder);
-      return state;
+      return {
+        ...state,
+        [action.key]: handleCreate(state[action.key], action.reminder),
+      };
     case UPDATE:
-      state[action.key] = handleUpdate(state[action.key], action.reminder);
-      return state;
+      return {
+        ...state,
+        [action.key]: handleUpdate(state[action.key], action.reminder),
+      };
     case DELETE:
-      state[action.key] = handleDelete(state[action.key], action.id);
-      return state;
+      return {
+        ...state,
+        [action.key]: handleDelete(state[action.key], action.id),
+      };
     case DELETE_ALL:
-      state[action.key] = [];
-      return state;
+      return { ...state, [action.key]: [] };
   }
 
   return state;

@@ -12,6 +12,7 @@
     "check-format": "prettier --ignore-path .gitignore \"**/*.+(js|json)\" --list-different"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "rc-time-picker": "^3.7.3",

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import Popup from 'reactjs-popup';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchCityForecast } from '../../store/fetchCityForecast';
 import {
   createReminder,
   updateReminder,
@@ -126,9 +127,10 @@ const Reminder = styled.div`
 `;
 
 const DayGrid = ({ date }) => {
-  const key = date.format('MMMM D YYYY');
+  const key = date.format('YYYY-MM-DD');
   const dispatch = useDispatch();
   const reminders = useSelector((state) => state.reminders[key]) || [];
+  const forecast = useSelector((state) => state.forecast) || {};
   reminders.sort((a, b) => a.time - b.time);
 
   const dayName = date.format('dddd');
@@ -140,6 +142,17 @@ const DayGrid = ({ date }) => {
     } else {
       dispatch(createReminder(key, reminderData));
     }
+
+    const { city } = reminderData;
+
+    if (!forecast[city]) {
+      fetchCityForecast(city, dispatch);
+    }
+  };
+
+  const weatherForReminder = (reminder) => {
+    const city = forecast[reminder.city] || {};
+    return city[key];
   };
 
   const handleDeleteAllReminder = () => {
@@ -196,7 +209,8 @@ const DayGrid = ({ date }) => {
             </DeleteReminderButton>
           </div>
           <p>
-            <b>{reminder.displayTime}</b> - {reminder.desc}
+            <u>{weatherForReminder(reminder)}</u> <b>{reminder.displayTime}</b>{' '}
+            - {reminder.desc}
           </p>
         </Reminder>
       ))}
