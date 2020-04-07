@@ -6,4 +6,5 @@ export const foggyGray = '#d1cebd';
 export const quarterSpanishWhite = '#f6eedf';
 export const greenPea = '#216353';
 export const trout = '#495057';
+export const tiara = '#c7cccb';
 export const small = '767px';

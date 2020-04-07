@@ -22,7 +22,8 @@ const StyledPopup = styled(Popup)`
   }
 `;
 const DayContainer = styled.div`
-  background: ${(props) => props.theme.iron};
+  background: ${(props) =>
+    props.isToday ? props.theme.tiara : props.theme.iron};
   border: 1px solid;
   border-color: ${(props) => props.theme.quarterSpanishWhite};
   border-top: 0;
@@ -127,7 +128,9 @@ const Reminder = styled.div`
 `;
 
 const DayGrid = ({ date }) => {
-  const key = date.format('YYYY-MM-DD');
+  const keyFormat = 'YYYY-MM-DD';
+  const key = date.format(keyFormat);
+  const isToday = key === moment().format(keyFormat);
   const dispatch = useDispatch();
   const reminders = useSelector((state) => state.reminders[key]) || [];
   const forecast = useSelector((state) => state.forecast) || {};
@@ -164,7 +167,7 @@ const DayGrid = ({ date }) => {
   };
 
   return (
-    <DayContainer dayName={dayName} dayNumber={dayNumber}>
+    <DayContainer dayName={dayName} dayNumber={dayNumber} isToday={isToday}>
       <StyledPopup
         trigger={<AddReminderButton>Add</AddReminderButton>}
         modal
