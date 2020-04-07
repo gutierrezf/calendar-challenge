@@ -22,7 +22,7 @@ Your app should now be running on [localhost:3000](http://localhost:3000/).
 
 ## Weather API
 
-Free tier account at [API](https://openweathermap.org/forecast5) can will get
-you a forecast to a max of 5 days from the current date.
+Free tier account at [API](https://openweathermap.org/forecast5) will get a
+forecast to a max of 5 days from the current date.
 
 Weather Forecast will only be available to reminders within this range.
