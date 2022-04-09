@@ -15,7 +15,7 @@
   "dependencies": {
     "@testing-library/user-event": "^10.0.1",
     "axios": "^0.19.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "prop-types": "^15.7.2",
     "rc-time-picker": "^3.7.3",
     "react": "^16.13.1",
